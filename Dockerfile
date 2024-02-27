@@ -1,19 +1,15 @@
-FROM python:3.9-alpine3.13
+FROM python:3.11-alpine
 
 ENV PYTHONUNBUFFERED 1
-
-COPY ./requirements.txt /tmp/requirements.txt
-
-COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 
 COPY ./app /app
 
 WORKDIR /app
 
+COPY ./requirements.txt /app/requirements.txt
+
+RUN apk update && apk add --no-cache postgresql-dev gcc python3-dev musl-dev
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
 EXPOSE 8000
-
-RUN python -m venv /py && \
-    /py/bin/pip install --upgrade pip && \
-    /py/bin/pip install -r /tmp/requirements.txt
-
-CMD [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
