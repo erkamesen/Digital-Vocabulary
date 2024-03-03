@@ -3,3 +3,4 @@ djangorestframework
 django-extensions
 psycopg2
 flake8
+djangorestframework-simplejwt
